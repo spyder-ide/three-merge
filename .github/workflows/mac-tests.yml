@@ -19,6 +19,8 @@ jobs:
             matrix:
                 PYTHON_VERSION: ["3.5", "3.6", "3.7", "3.8"]
         steps:
+            - name: Checkout branch
+              uses: actions/checkout@v1
             - name: Install Conda
               uses: goanpeca/setup-miniconda@v1
               with:
