@@ -16,7 +16,7 @@ DELETION = -1
 ADDITION = 1
 
 
-def merge(source, target, base):
+def merge(source: str, target: str, base: str) -> str:
     diff1_l = DIFFER.diff_main(base, source)
     diff2_l = DIFFER.diff_main(base, target)
 
