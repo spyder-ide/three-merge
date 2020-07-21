@@ -44,8 +44,8 @@ def merge(source, target, base):
                     target_status, target_text = target
                     if target_status == DELETION:
                         if len(target_text) > len(invariant):
-                            invariant = ''
                             target_text = target_text[len(invariant):]
+                            invariant = ''
                             target = (target_status, target_text)
                         else:
                             invariant = invariant[len(target_text):]
@@ -55,16 +55,18 @@ def merge(source, target, base):
                         target = next(diff2, None)
                     else:
                         # Recompute invariant and advance source
-                        # target_text = target_text[len(invariant):]
-                        # composed_text.append(invariant)
-                        # invariant = ''
-                        # target = (target_status, target_text)
-                        assert invariant[:len(target_text)] == target_text
-                        source = (source_status, invariant)
-                        composed_text.append(target_text)
-                        invariant = ''
-                        advance = False
-                        target = next(diff2, None)
+                        if len(invariant) > len(target_text):
+                            assert invariant[:len(target_text)] == target_text
+                            source = (source_status, invariant)
+                            composed_text.append(target_text)
+                            invariant = ''
+                            advance = False
+                            target = next(diff2, None)
+                        else:
+                            target_text = target_text[len(invariant):]
+                            composed_text.append(invariant)
+                            invariant = ''
+                            target = (target_status, target_text)
                 if advance:
                     source = next(diff1, None)
             elif len(source_text) < len(target_text):
@@ -214,4 +216,17 @@ def merge(source, target, base):
                 composed_text.append('<<<<<<< -- {0} '.format(source_text))
                 composed_text.append('======= -- {0} '.format(target_text))
                 composed_text.append('>>>>>>>')
+
+    while source is not None:
+        source_status, source_text = source
+        assert source_status == ADDITION
+        composed_text.append(source_text)
+        source = next(diff1, None)
+
+    while target is not None:
+        target_status, target_text = target
+        assert target_status == ADDITION
+        composed_text.append(target_text)
+        target = next(diff2, None)
+
     return ''.join(composed_text)

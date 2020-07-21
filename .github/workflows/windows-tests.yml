@@ -1,0 +1,36 @@
+name: Windows tests
+
+on:
+    push:
+        branches:
+            - master
+    pull_request:
+        branches:
+            - master
+jobs:
+    linux:
+        name: Windows Py${{ matrix.PYTHON_VERSION }}
+        runs-on: windows-latest
+        env:
+            PYTHON_VERSION: ${{ matrix.PYTHON_VERSION }}
+            RUNNER_OS: "windows"
+        strategy:
+            fail-fast: false
+            matrix:
+                PYTHON_VERSION: ["3.5", "3.6", "3.7", "3.8"]
+        steps:
+            - name: Checkout branch
+              uses: actions/checkout@v1
+            - name: Install Conda
+              uses: goanpeca/setup-miniconda@v1
+              with:
+                activate-environment: test
+                auto-update-conda: true
+                auto-activate-base: false
+                python-version: ${{ matrix.PYTHON_VERSION }}
+            - name: Install build/test dependencies
+              shell: bash -l {0}
+              run: pip install diff-match-patch pytest pytest-cov coverage codecov
+            - name: Run tests
+              shell: bash -l {0}
+              run: pytest -v -x --cov=three_merge three_merge/tests
