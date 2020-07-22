@@ -12,5 +12,5 @@ from .merge import merge
 merge
 
 # Package version
-VERSION_INFO = (0, 1, 1)
+VERSION_INFO = (0, 1, 2, 'dev0')
 __version__ = '.'.join(map(str, VERSION_INFO))
