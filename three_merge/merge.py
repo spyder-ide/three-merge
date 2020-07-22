@@ -57,7 +57,8 @@ def merge(source: str, target: str, base: str) -> str:
                         # Recompute invariant and advance source
                         if len(invariant) > len(target_text):
                             assert invariant[:len(target_text)] == target_text
-                            source = (source_status, invariant)
+                            source = (
+                                source_status, invariant[len(target_text):])
                             composed_text.append(target_text)
                             invariant = ''
                             advance = False
@@ -219,14 +220,16 @@ def merge(source: str, target: str, base: str) -> str:
 
     while source is not None:
         source_status, source_text = source
-        assert source_status == ADDITION
-        composed_text.append(source_text)
+        assert source_status == ADDITION or source_status == PRESERVED
+        if source_status == ADDITION:
+            composed_text.append(source_text)
         source = next(diff1, None)
 
     while target is not None:
         target_status, target_text = target
-        assert target_status == ADDITION
-        composed_text.append(target_text)
+        assert target_status == ADDITION or source_status == PRESERVED
+        if target_status == ADDITION:
+            composed_text.append(target_text)
         target = next(diff2, None)
 
     return ''.join(composed_text)
