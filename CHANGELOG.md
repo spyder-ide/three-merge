@@ -1,3 +1,18 @@
+## Version 0.1.1 (2020/07/22)
+
+### Issues Closed
+
+* [Issue 8](https://github.com/spyder-ide/three-merge/issues/8) - Release v0.1.1
+
+In this release 1 issue was closed.
+
+### Pull Requests Merged
+
+* [PR 7](https://github.com/spyder-ide/three-merge/pull/7) - PR: Fix error with source text update on preserved strings and empty preservations, by [@andfoy](https://github.com/andfoy)
+
+In this release 1 pull request was closed.
+
+
 ## Version 0.1.0 (2020/07/21)
 
 ### Issues Closed
