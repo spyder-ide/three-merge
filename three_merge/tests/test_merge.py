@@ -116,3 +116,15 @@ def test_deletion_addition_conflict():
 
     merged = merge(target, source, base)
     assert merged == expected
+
+
+def test_triple_addition():
+    base = '123456789101112'
+    source = '123\n    456789101112'
+    target = '12345678910(11)12'
+    expected = '123\n    45678910(11)12'
+    merged = merge(source, target, base)
+    assert merged == expected
+
+    merged = merge(target, source, base)
+    assert merged == expected
